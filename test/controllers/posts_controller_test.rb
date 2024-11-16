@@ -2,6 +2,8 @@ require "test_helper"
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
   setup do
+    @user = users(:one) # Assuming you have a user fixture
+    post session_url, params: { email_address: @user.email_address, password: "password" } # Log in the user
     @post = posts(:one)
   end
 
@@ -17,7 +19,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create post" do
     assert_difference("Post.count") do
-      post posts_url, params: { post: { body: @post.body, title: @post.title } }
+      post posts_url, params: { post: { body: "Testing creation", title: "Creating post" } }
     end
 
     assert_redirected_to post_url(Post.last)
@@ -34,7 +36,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update post" do
-    patch post_url(@post), params: { post: { body: @post.body, title: @post.title } }
+    patch post_url(@post), params: { post: { body: "Testing Update", title: "Updating Post" } }
     assert_redirected_to post_url(@post)
   end
 
